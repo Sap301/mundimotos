@@ -1,0 +1,2 @@
+function Footer(container){var sectionId=container.getAttribute("data-section-id"),m=container.getAttribute("data-multi");theme.multiFoot=m,theme.multiHead=="false"&&theme.multiFoot=="true"&&Multi()}sectionEvents.forEach(function(sectionEvent){let sectionContainer=sectionEvent.detail;sectionContainer.dataset.sectionType==="footer"&&!sectionContainer.classList.contains("ignore")&&(Footer(sectionContainer),sectionContainer.classList.add("ignore"))});
+//# sourceMappingURL=/cdn/shop/t/10/assets/script.footer.js.map?v=99714854018320942351669387988

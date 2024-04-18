@@ -1,0 +1,72 @@
+
+    (function() {
+      var baseURL = "https://cdn.shopify.com/shopifycloud/checkout-web/assets/";
+      var scripts = ["https://cdn.shopify.com/shopifycloud/checkout-web/assets/runtime.latest.es.2da17aff1538ad0e9a14.js","https://cdn.shopify.com/shopifycloud/checkout-web/assets/902.latest.es.53c6d2a6ebbd59feedca.js","https://cdn.shopify.com/shopifycloud/checkout-web/assets/114.latest.es.c10601cb53ddc81e5051.js","https://cdn.shopify.com/shopifycloud/checkout-web/assets/991.latest.es.4f084dd084454ddfd023.js","https://cdn.shopify.com/shopifycloud/checkout-web/assets/app.latest.es.ddf1fd19bb00578a08cc.js","https://cdn.shopify.com/shopifycloud/checkout-web/assets/845.latest.es.6db36d65de55b15facf0.js","https://cdn.shopify.com/shopifycloud/checkout-web/assets/569.latest.es.406f42dec60e3e93493f.js","https://cdn.shopify.com/shopifycloud/checkout-web/assets/462.latest.es.3c421359bb1e62c86a3f.js","https://cdn.shopify.com/shopifycloud/checkout-web/assets/18.latest.es.c9f672ad788f6aa0edd6.js","https://cdn.shopify.com/shopifycloud/checkout-web/assets/OnePage.latest.es.1ba5661fa33a9f3a0b95.js"];
+      var styles = ["https://cdn.shopify.com/shopifycloud/checkout-web/assets/902.latest.es.e3249b8edfbd78330bac.css","https://cdn.shopify.com/shopifycloud/checkout-web/assets/app.latest.es.af079b2235159d2aef1d.css","https://cdn.shopify.com/shopifycloud/checkout-web/assets/268.latest.es.b1a85f925b41702ad78f.css"];
+      var fontPreconnectUrls = ["https://fonts.shopifycdn.com"];
+      var fontPrefetchUrls = ["https://fonts.shopifycdn.com/open_sans/opensans_n4.5460e0463a398b1075386f51084d8aa756bafb17.woff2?h1=bXVuZGltb3Rvcy5jb20&hmac=0f541b534186e0aa89d9addaac45821a91da0040760779269f153549b9178685","https://fonts.shopifycdn.com/open_sans/opensans_n6.63a74f6cbbfef729fb07955b2d5b4cc83273862e.woff2?h1=bXVuZGltb3Rvcy5jb20&hmac=dc45b985378ae01bf0b28217d27515625751d67d4635dfd94d1ce86f7c7643af"];
+      var imgPrefetchUrls = ["https://cdn.shopify.com/s/files/1/0061/6693/7700/files/Resumen_de_compra_editable_angosta_Pantalla_de_pago_copia_2000x.png?v=1709582595"];
+
+      function preconnect(url, callback) {
+        var link = document.createElement('link');
+        link.rel = 'dns-prefetch preconnect';
+        link.href = url;
+        link.crossOrigin = '';
+        link.onload = link.onerror = callback;
+        document.head.appendChild(link);
+      }
+
+      function preconnectAssets() {
+        var resources = [baseURL].concat(fontPreconnectUrls);
+        var index = 0;
+        (function next() {
+          var res = resources[index++];
+          if (res) preconnect(res[0], next);
+        })();
+      }
+
+      function prefetch(url, as, callback) {
+        var link = document.createElement('link');
+        if (link.relList.supports('prefetch')) {
+          link.rel = 'prefetch';
+          link.fetchPriority = 'low';
+          link.as = as;
+          if (as === 'font') link.type = 'font/woff2';
+          link.href = url;
+          link.crossOrigin = '';
+          link.onload = link.onerror = callback;
+          document.head.appendChild(link);
+        } else {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', url, true);
+          xhr.onloadend = callback;
+          xhr.send();
+        }
+      }
+
+      function prefetchAssets() {
+        var resources = [].concat(
+          scripts.map(function(url) { return [url, 'script']; }),
+          styles.map(function(url) { return [url, 'style']; }),
+          fontPrefetchUrls.map(function(url) { return [url, 'font']; }),
+          imgPrefetchUrls.map(function(url) { return [url, 'image']; })
+        );
+        var index = 0;
+        (function next() {
+          var res = resources[index++];
+          if (res) prefetch(res[0], res[1], next);
+        })();
+      }
+
+      function onLoaded() {
+        preconnectAssets();
+        prefetchAssets();
+      }
+
+      if (document.readyState === 'complete') {
+        onLoaded();
+      } else {
+        addEventListener('load', onLoaded);
+      }
+    })();
+  
